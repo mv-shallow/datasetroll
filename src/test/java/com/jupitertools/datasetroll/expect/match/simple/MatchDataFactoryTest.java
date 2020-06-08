@@ -1,0 +1,38 @@
+package com.jupitertools.datasetroll.expect.match.simple;
+
+import java.util.stream.Stream;
+
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.jupitertools.datasetroll.expect.match.MatchData;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * Created on 19.12.2018.
+ *
+ * @author Korovin Anatoliy
+ */
+class MatchDataFactoryTest {
+
+    private MatchDataFactory matchDataFactory = new MatchDataFactory();
+
+    private static Stream<Arguments> aliases() {
+        return Stream.of(Arguments.of(JsonNodeType.STRING, MatchString.class),
+                         Arguments.of(JsonNodeType.OBJECT, MatchMap.class),
+                         Arguments.of(JsonNodeType.ARRAY, MatchList.class),
+                         Arguments.of(JsonNodeType.NUMBER, MatchNumber.class),
+                         Arguments.of(JsonNodeType.BOOLEAN, MatchObjects.class));
+    }
+
+    @ParameterizedTest
+    @MethodSource("aliases")
+    void get(JsonNodeType jsonType, Class<?> matchType) {
+        // Act
+        MatchData matchData = matchDataFactory.get(jsonType);
+        // Asserts
+        assertThat(matchData).isInstanceOf(matchType);
+    }
+}

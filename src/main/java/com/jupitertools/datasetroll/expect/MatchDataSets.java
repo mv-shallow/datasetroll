@@ -76,6 +76,7 @@ public class MatchDataSets {
 
     private void assertSetsOfDocumentsAreIdentical(Set<String> documentNamesFirst,
                                                    Set<String> documentNamesSecond) {
+
         Assertions.assertEquals(documentNamesFirst,
                                 documentNamesSecond,
                                 () -> String.format("Not equal document collections:\n expected:\n[%s],\n actual: \n[%s]",

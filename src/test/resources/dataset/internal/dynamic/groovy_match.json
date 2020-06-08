@@ -1,0 +1,8 @@
+{
+  "com.jupiter.tools.spring.test.mongo.Bar": [
+    {
+      "id": "1",
+      "data": "groovy-match: value.equals((1..10).sum().toString())"
+    }
+  ]
+}

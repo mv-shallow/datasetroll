@@ -1,0 +1,22 @@
+package com.jupitertools.datasetroll.expect.dtnamic.value;
+
+import com.jupitertools.datasetroll.expect.dynamic.value.DynamicValue;
+
+/**
+ * Created on 16.12.2018.
+ *
+ * @author Korovin Anatoliy
+ */
+public class SimpleDynamicValue implements DynamicValue {
+
+    @Override
+    public boolean isNecessary(Object value) {
+        return value instanceof String &&
+               ((String) value).startsWith("fixme:");
+    }
+
+    @Override
+    public Object evaluate(Object value) {
+        return "{fixed}";
+    }
+}
