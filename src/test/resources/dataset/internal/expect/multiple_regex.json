@@ -1,0 +1,18 @@
+{
+  "com.jupiter.tools.spring.test.mongo.Bar": [
+    {
+      "data": "data-1"
+    },
+    {
+      "id": "regex: ^[2-3]{1}$",
+      "data": "regex: ^data-.$"
+    },
+    {
+      "id": "regex: ^[2-3]{1}$",
+      "data": "regex: ^data-.$"
+    },
+    {
+      "data": "regex: ^data-.$"
+    }
+  ]
+}

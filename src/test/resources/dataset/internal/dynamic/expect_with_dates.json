@@ -1,0 +1,12 @@
+{
+  "com.jupiter.tools.spring.test.mongo.Foo": [
+    {
+      "id": "1",
+      "time": "date-match:[NOW]"
+    },
+    {
+      "id": "2",
+      "time":"date-match:[NOW]+3(MINUTES)"
+    }
+  ]
+}

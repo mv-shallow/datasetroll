@@ -1,6 +1,8 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
 
+import java.math.BigDecimal;
+
 import com.jupitertools.datasetroll.expect.match.MatchData;
 import org.apache.commons.math3.util.Precision;
 
@@ -11,12 +13,11 @@ import org.apache.commons.math3.util.Precision;
  */
 public class MatchDouble implements MatchData {
 
-    private static final double THRESHOLD = 1E-14;
-
     @Override
     public boolean match(Object original, Object expected) {
-        Number originalNumber = (Number) original;
-        Number expectedNumber = (Number) expected;
-        return Precision.equals(originalNumber.doubleValue(), expectedNumber.doubleValue(), THRESHOLD);
+
+        Number originalNumber = new BigDecimal(original.toString());
+        Number expectedNumber = new BigDecimal(expected.toString());
+        return originalNumber.equals(expectedNumber);
     }
 }

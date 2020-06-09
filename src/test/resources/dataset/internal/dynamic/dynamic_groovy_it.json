@@ -1,0 +1,9 @@
+{
+  "com.jupiter.tools.spring.test.mongo.Foo": [
+    {
+      "id": "groovy: 2*4",
+      "time": "groovy: new Date()",
+      "counter": "groovy: (1..10).sum()"
+    }
+  ]
+}

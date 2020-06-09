@@ -1,0 +1,8 @@
+{
+  "com.jupiter.tools.spring.test.mongo.Bar": [
+    {
+      "id": "1",
+      "data": "js-match: value == 'b' + 'a' + + 'a' + 'a'"
+    }
+  ]
+}
