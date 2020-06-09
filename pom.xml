@@ -78,6 +78,12 @@
             <version>3.3.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.11.1</version>
+            <scope>test</scope>
+        </dependency>
         <!-- endregion Testing tools -->
 
         <!-- Groovy -->
@@ -89,12 +95,6 @@
         </dependency>
         <!-- Groovy -->
 
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.11.1</version>
-        </dependency>
-
         <!-- Tools to scan a test package -->
         <dependency>
             <groupId>org.reflections</groupId>
@@ -102,7 +102,6 @@
             <version>0.9.11</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -115,26 +114,31 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-engine</artifactId>
             <version>${junit-platform.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
             <version>${junit-platform.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
         <!-- endregion Junit 5 -->
     </dependencies>
@@ -150,6 +154,63 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <source>8</source>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <reportFormat>plain</reportFormat>
+                    <includes>
+                        <include>**/*Test*.java</include>
+                        <include>**/*IT*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+
+
         </plugins>
         <resources>
             <resource>
