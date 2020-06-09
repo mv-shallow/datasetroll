@@ -7,7 +7,7 @@
 
     <groupId>com.jupiter-tools</groupId>
     <artifactId>datasetroll</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>datasetroll</name>
     <description>Common tools to matching DataSets in tests</description>
 
@@ -66,6 +66,9 @@
         <jackson.version>2.11.0</jackson.version>
         <jackson.version.core>${jackson.version}</jackson.version.core>
         <jackson.version.databind>${jackson.version}</jackson.version.databind>
+        <apache.common-io.version>2.7</apache.common-io.version>
+        <apache.common-math3.version>3.6.1</apache.common-math3.version>
+        <org.reflections.versions>0.9.11</org.reflections.versions>
     </properties>
 
     <dependencies>
@@ -83,18 +86,32 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>${apache.common-io.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.5</version>
+            <version>${apache.common-math3.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+
+        <!-- Tools to scan a test package -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${org.reflections.versions}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <!-- Tools to scan a test package -->
 
         <!-- region Testing tools -->
         <dependency>
@@ -152,20 +169,6 @@
             <scope>test</scope>
         </dependency>
         <!-- Groovy -->
-
-        <!-- Tools to scan a test package -->
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-        <!-- Tools to scan a test package -->
 
     </dependencies>
 
