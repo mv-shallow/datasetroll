@@ -12,13 +12,14 @@ public class IndexedGraph implements Graph {
 
     private final Graph graph;
     private boolean indexReady;
-    private Set<Integer> patternIndexes;
-    private Set<Integer> dataIndexes;
+    private final Set<Integer> patternIndexes;
+    private final Set<Integer> dataIndexes;
 
     public IndexedGraph(Graph graph) {
         this.graph = graph;
-        this.dataIndexes = new HashSet<>();
-        this.patternIndexes = new HashSet<>();
+
+        dataIndexes = new HashSet<>();
+        patternIndexes = new HashSet<>();
     }
 
     @Override

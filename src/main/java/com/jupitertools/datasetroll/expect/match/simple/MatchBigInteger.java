@@ -1,10 +1,8 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
-
-import java.math.BigInteger;
-
 import com.jupitertools.datasetroll.expect.match.MatchData;
 
+import java.math.BigInteger;
 
 /**
  * Created on 19.12.2018.

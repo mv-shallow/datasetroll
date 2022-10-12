@@ -1,10 +1,8 @@
 package com.jupitertools.datasetroll.expect.match.smart.date;
 
-
-import java.util.Date;
-
 import com.jupitertools.datasetroll.expect.match.smart.MatchDataSmart;
 
+import java.util.Date;
 
 /**
  * Created on 22.12.2018.

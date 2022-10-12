@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll.expect.match.smart.javascript;
 
-import com.antkorwin.commonutils.exceptions.InternalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

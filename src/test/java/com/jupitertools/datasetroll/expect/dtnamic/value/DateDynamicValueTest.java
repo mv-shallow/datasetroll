@@ -1,11 +1,11 @@
 package com.jupitertools.datasetroll.expect.dtnamic.value;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import com.jupitertools.datasetroll.expect.dynamic.value.DateDynamicValue;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

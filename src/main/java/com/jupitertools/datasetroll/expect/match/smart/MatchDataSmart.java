@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll.expect.match.smart;
 
-
 import com.jupitertools.datasetroll.expect.match.MatchData;
 
 /**

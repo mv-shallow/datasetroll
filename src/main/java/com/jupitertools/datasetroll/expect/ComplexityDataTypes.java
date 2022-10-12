@@ -1,16 +1,15 @@
 package com.jupitertools.datasetroll.expect;
 
+import com.google.common.collect.Sets;
 
 import java.util.Set;
-
-import com.google.common.collect.Sets;
 
 /**
  * Check complexity of the object
  */
 public class ComplexityDataTypes {
 
-    private final Set<Class> simpleTypes =
+    private final Set<Class<?>> simpleTypes =
             Sets.newHashSet(Boolean.class,
                             Byte.class,
                             Short.class,

@@ -1,8 +1,8 @@
 package com.jupitertools.datasetroll.expect.graph;
 
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

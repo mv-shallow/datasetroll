@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll.tools;
 
-
 /**
  * Created on 27/11/2019
  * <p>

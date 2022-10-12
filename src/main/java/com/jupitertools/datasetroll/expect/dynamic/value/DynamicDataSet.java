@@ -1,13 +1,11 @@
 package com.jupitertools.datasetroll.expect.dynamic.value;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupitertools.datasetroll.DataSet;
 import com.jupitertools.datasetroll.expect.ComplexityDataTypes;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created on 16.12.2018.
@@ -21,14 +19,12 @@ public class DynamicDataSet implements DataSet {
     private final DataSet dataSet;
     private final Set<DynamicValue> dynamicValueEvaluators;
     private final ComplexityDataTypes complexityDataTypes;
-    private final ObjectMapper objectMapper;
 
-    public DynamicDataSet(DataSet dataSet,
-                          Set<DynamicValue> dynamicValueEvaluators) {
+    public DynamicDataSet(DataSet dataSet, Set<DynamicValue> dynamicValueEvaluators) {
         this.dataSet = dataSet;
         this.dynamicValueEvaluators = dynamicValueEvaluators;
-        this.complexityDataTypes = new ComplexityDataTypes();
-        this.objectMapper = new ObjectMapper();
+
+        complexityDataTypes = new ComplexityDataTypes();
     }
 
     @Override
@@ -37,8 +33,8 @@ public class DynamicDataSet implements DataSet {
         Map<String, List<Map<String, Object>>> evaluatedDataSet = this.dataSet.read();
 
         for (List<Map<String, Object>> data : evaluatedDataSet.values()) {
-            for (Map<String, Object> maps : data) {
-                applyReplacerToMap(maps);
+            for (Map<String, Object> map : data) {
+                applyReplacerToMap(map);
             }
         }
 
@@ -46,10 +42,9 @@ public class DynamicDataSet implements DataSet {
     }
 
     private void applyReplacerToMap(Map<String, Object> maps) {
-
         for (String key : maps.keySet()) {
             Object value = maps.get(key);
-            if(value == null){
+            if (value == null) {
                 continue;
             }
             if (!this.complexityDataTypes.isComplexType(value)) {

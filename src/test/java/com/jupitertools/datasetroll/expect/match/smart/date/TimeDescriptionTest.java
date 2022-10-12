@@ -1,10 +1,10 @@
 package com.jupitertools.datasetroll.expect.match.smart.date;
 
-import java.util.concurrent.TimeUnit;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

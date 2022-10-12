@@ -1,12 +1,12 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.jupitertools.datasetroll.expect.match.MatchData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

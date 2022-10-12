@@ -1,10 +1,10 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupitertools.datasetroll.expect.match.MatchAny;
 import com.jupitertools.datasetroll.expect.match.MatchData;
+
+import java.util.Map;
 
 /**
  * Created on 18.12.2018.
@@ -19,8 +19,8 @@ public class MatchMap implements MatchData {
     private final MatchAny matchAny;
 
     public MatchMap() {
-        this.objectMapper = new ObjectMapper();
-        this.matchAny = new MatchAny();
+        objectMapper = new ObjectMapper();
+        matchAny = new MatchAny();
     }
 
     @Override

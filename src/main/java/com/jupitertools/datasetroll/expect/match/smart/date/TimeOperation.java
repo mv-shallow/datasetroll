@@ -1,9 +1,7 @@
 package com.jupitertools.datasetroll.expect.match.smart.date;
 
-
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * Created on 22.12.2018.

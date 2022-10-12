@@ -1,14 +1,12 @@
 package com.jupitertools.datasetroll.expect.match.smart;
 
-
-import java.util.Arrays;
-import java.util.List;
-
 import com.jupitertools.datasetroll.expect.match.smart.date.MatchDate;
 import com.jupitertools.datasetroll.expect.match.smart.groovy.MatchGroovy;
 import com.jupitertools.datasetroll.expect.match.smart.javascript.MatchJavaScript;
 import com.jupitertools.datasetroll.expect.match.smart.regexp.MatchRegExp;
 
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created on 22.12.2018.
@@ -17,10 +15,10 @@ import com.jupitertools.datasetroll.expect.match.smart.regexp.MatchRegExp;
  */
 public class MatchDataSmartFactory {
 
-    private List<MatchDataSmart> matchDataList = Arrays.asList(new MatchGroovy(),
-                                                               new MatchJavaScript(),
-                                                               new MatchDate(),
-                                                               new MatchRegExp());
+    private final List<MatchDataSmart> matchDataList = Arrays.asList(new MatchGroovy(),
+                                                                     new MatchJavaScript(),
+                                                                     new MatchDate(),
+                                                                     new MatchRegExp());
 
     /**
      * check expected value to match on any matchers.
@@ -43,7 +41,7 @@ public class MatchDataSmartFactory {
      *
      * @param expected expected value (or some scripts)
      *
-     * @return MatchDataSmart which must be apply to this value
+     * @return MatchDataSmart which must be applied to this value
      */
     public MatchDataSmart get(Object expected) {
         for (MatchDataSmart matchData : matchDataList) {
@@ -51,7 +49,7 @@ public class MatchDataSmartFactory {
                 return matchData;
             }
         }
-        //TODO: improve the system of exceptions
+
         throw new RuntimeException("Not found MatchDataSmart for {" + expected.toString() + "} object.");
     }
 }

@@ -1,11 +1,12 @@
 package com.jupitertools.datasetroll.exportdata;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jupitertools.datasetroll.DataSet;
 import com.jupitertools.datasetroll.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 
 /**
  * Convert object to {@link Text} in JSON format.
@@ -19,10 +20,10 @@ public class JsonExport implements Text {
     private final Logger log;
 
     public JsonExport(DataSet dataSet) {
-        this.objectMapper = new ObjectMapper();
-        this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         this.dataSet = dataSet;
-        this.log = LoggerFactory.getLogger(JsonExport.class);
+
+        objectMapper = new ObjectMapper().enable(INDENT_OUTPUT);
+        log = LoggerFactory.getLogger(JsonExport.class);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class JsonExport implements Text {
         } catch (Exception e) {
             log.error("Error while converting a dataset to the JSON string: ", e);
             // TODO: improve the system of exceptions
-            throw new RuntimeException("Error while converting the dataset " + dataSet + "  to the JSON string", e);
+            throw new RuntimeException(e);
         }
     }
 }

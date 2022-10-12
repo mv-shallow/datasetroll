@@ -1,16 +1,14 @@
 package com.jupitertools.datasetroll.expect.graph;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import com.antkorwin.commonutils.exceptions.InternalException;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,11 +24,11 @@ class AssertGraphTest {
         // Arrange
         boolean[][] graph = {
                 // @formatter:off
-                {true,  false, false, false, false},
-                {false, true,  false, false, false},
+                {true, false, false, false, false},
+                {false, true, false, false, false},
                 {false, false, false, false, true},
-                {false, false, false, true,  false},
-                {false, false, true,  false, false}
+                {false, false, false, true, false},
+                {false, false, true, false, false}
                 // @formatter:on
         };
         // Act & Assert
@@ -44,11 +42,11 @@ class AssertGraphTest {
         // Arrange
         boolean[][] graph = {
                 // @formatter:off
-                {true,  false, false, false, false},
-                {false, true,  false, false, false},
+                {true, false, false, false, false},
+                {false, true, false, false, false},
                 {false, false, false, false, false},
-                {false, false, false, true,  false},
-                {false, false, true,  false, false}
+                {false, false, false, true, false},
+                {false, false, true, false, false}
                 // @formatter:on
         };
         List<Map<String, Object>> data = Arrays.asList(
@@ -76,10 +74,10 @@ class AssertGraphTest {
         // Arrange
         boolean[][] graph = {
                 // @formatter:off
-                {true,  false, false, false, false},
-                {false, true,  false, false, false},
+                {true, false, false, false, false},
+                {false, true, false, false, false},
                 {false, false, false, false, true},
-                {false, false, false, true,  false},
+                {false, false, false, true, false},
                 {false, false, false, false, false}
                 // @formatter:on
         };
@@ -111,10 +109,10 @@ class AssertGraphTest {
         void testWithWrongData() {
             // Arrange
             boolean[][] graph = {
-                // @formatter:off
-                {true,  false},
-                {false, false},
-                // @formatter:on
+                    // @formatter:off
+                    {true, false},
+                    {false, false},
+                    // @formatter:on
             };
             List<Map<String, Object>> data = Arrays.asList(
                     ImmutableMap.of("id", new ObjectWithPrivateFields()),

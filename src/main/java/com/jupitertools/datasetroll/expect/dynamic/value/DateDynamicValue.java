@@ -1,10 +1,8 @@
 package com.jupitertools.datasetroll.expect.dynamic.value;
 
-
-import java.util.Date;
-
 import com.jupitertools.datasetroll.expect.match.smart.date.TimeDescription;
 
+import java.util.Date;
 
 /**
  * Created on 26.12.2018.

@@ -21,7 +21,8 @@ public class ReachabilityGraph implements Graph {
 
     public ReachabilityGraph(Graph graph) {
         this.graph = graph;
-        this.finalMatchers = new HashMap<>();
+
+        finalMatchers = new HashMap<>();
     }
 
     @Override
@@ -69,7 +70,7 @@ public class ReachabilityGraph implements Graph {
         List<Integer> indexes = getCorrectMatcherIndexes(lineNumber);
         if (indexes.size() == 1) {
             int indexOfUniqueMatcher = indexes.get(0);
-            if (finalMatchers.keySet().contains(indexOfUniqueMatcher)) {
+            if (finalMatchers.containsKey(indexOfUniqueMatcher)) {
                 if (finalMatchers.get(indexOfUniqueMatcher) != lineNumber) {
                     matrix[lineNumber][indexOfUniqueMatcher] = false;
                 }

@@ -1,12 +1,12 @@
 package com.jupitertools.datasetroll.expect;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import com.google.common.collect.ImmutableMap;
 import com.jupitertools.datasetroll.DataSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

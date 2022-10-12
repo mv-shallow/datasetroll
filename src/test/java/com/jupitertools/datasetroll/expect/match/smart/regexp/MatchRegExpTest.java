@@ -1,9 +1,9 @@
 package com.jupitertools.datasetroll.expect.match.smart.regexp;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

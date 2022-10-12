@@ -1,8 +1,8 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
-import java.math.BigInteger;
-
 import org.junit.jupiter.api.Test;
+
+import java.math.BigInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

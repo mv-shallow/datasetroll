@@ -1,9 +1,5 @@
 package com.jupitertools.datasetroll.expect;
 
-import java.lang.annotation.ElementType;
-import java.util.Date;
-import java.util.stream.Stream;
-
 import com.google.common.collect.ImmutableMap;
 import com.jupitertools.datasetroll.Bar;
 import com.jupitertools.datasetroll.Foo;
@@ -11,8 +7,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.annotation.ElementType;
+import java.util.Date;
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ComplexityDataTypesTest {
 

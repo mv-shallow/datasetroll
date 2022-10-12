@@ -1,8 +1,8 @@
 package com.jupitertools.datasetroll.expect.graph;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Arrays;
 
 public class AssertGraphEquals {
     private final Graph first;

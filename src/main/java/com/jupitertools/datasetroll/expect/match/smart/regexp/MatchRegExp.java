@@ -1,10 +1,9 @@
 package com.jupitertools.datasetroll.expect.match.smart.regexp;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.jupitertools.datasetroll.expect.match.smart.MatchDataSmart;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created on 19.12.2018.
@@ -21,7 +20,7 @@ public class MatchRegExp implements MatchDataSmart {
         String cmpValue = (String) comparableValue;
         cmpValue = cmpValue.replaceFirst("regex:", "").trim();
         Pattern pattern = Pattern.compile(cmpValue);
-        Matcher matcher = pattern.matcher((String) originValue);
+        Matcher matcher = pattern.matcher(originValue.toString());
         return matcher.matches();
     }
 

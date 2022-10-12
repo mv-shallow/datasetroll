@@ -1,11 +1,10 @@
 package com.jupitertools.datasetroll.expect.match.smart.groovy;
 
-import java.util.Date;
-
-import com.antkorwin.commonutils.exceptions.InternalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -100,7 +99,7 @@ class MatchGroovyTest {
             RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
                 matchGroovy.match(55, "groovy-match: *p = (1..10).sum() ");
             });
-            assertThat(exception.getMessage()).contains("Groovy engine evaluate error");
+            assertThat(exception.getMessage()).contains("Groovy engine script evaluation error");
         }
     }
 }

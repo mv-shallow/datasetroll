@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Created on 22.12.2018.
  *
@@ -83,7 +82,7 @@ public class TimeDescription {
 
 
     private int parseCount(Matcher matcher) {
-        return Integer.valueOf(matcher.group(4));
+        return Integer.parseInt(matcher.group(4));
     }
 
     /**
@@ -96,7 +95,6 @@ public class TimeDescription {
             case "-":
                 return TimeDirection.MINUS;
             default:
-                // TODO: improve the system of exceptions
                 throw new RuntimeException("unsupported operation");
         }
     }
@@ -124,7 +122,7 @@ public class TimeDescription {
 
     private Integer parseThreshold(Matcher matcher) {
         return threshold = (matcher.group(8) != null)
-                           ? Integer.valueOf(matcher.group(8))
+                           ? Integer.parseInt(matcher.group(8))
                            : DEFAULT_THRESHOLD;
     }
 }

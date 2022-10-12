@@ -1,9 +1,5 @@
 package com.jupitertools.datasetroll.exportdata;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.jupitertools.datasetroll.DataSet;
@@ -11,8 +7,11 @@ import com.jupitertools.datasetroll.importdata.ImportFile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created on 06.12.2018.

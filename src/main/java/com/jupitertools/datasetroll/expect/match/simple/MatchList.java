@@ -1,13 +1,13 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jupitertools.datasetroll.expect.match.MatchData;
 import com.jupitertools.datasetroll.expect.match.MatchAny;
+import com.jupitertools.datasetroll.expect.match.MatchData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Created on 18.12.2018.
@@ -23,9 +23,9 @@ public class MatchList implements MatchData {
     private final Logger log;
 
     public MatchList() {
-        this.objectMapper = new ObjectMapper();
-        this.matchAny = new MatchAny();
-        this.log = LoggerFactory.getLogger(MatchList.class);
+        objectMapper = new ObjectMapper();
+        matchAny = new MatchAny();
+        log = LoggerFactory.getLogger(MatchList.class);
     }
 
     @Override
@@ -59,9 +59,9 @@ public class MatchList implements MatchData {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            log.error("jackson parsing error", e);
+            log.error("Jackson parsing error", e);
             // TODO: improve the system of exceptions
-            throw new RuntimeException("jackson error", e);
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,17 +1,16 @@
 package com.jupitertools.datasetroll.expect.match;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-
 import com.google.common.collect.ImmutableMap;
 import com.jupitertools.datasetroll.Bar;
 import com.jupitertools.datasetroll.FooBar;
 import com.jupitertools.datasetroll.expect.TestData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

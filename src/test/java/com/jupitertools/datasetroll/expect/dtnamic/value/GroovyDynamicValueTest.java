@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll.expect.dtnamic.value;
 
-import com.antkorwin.commonutils.exceptions.InternalException;
 import com.jupitertools.datasetroll.expect.dynamic.value.GroovyDynamicValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

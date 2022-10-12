@@ -1,11 +1,11 @@
 package com.jupitertools.datasetroll.expect.dynamic.value;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created on 16.12.2018.
@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
 public class JavaScriptDynamicValue implements DynamicValue {
 
     private final ScriptEngine engine;
-    private final Logger log = LoggerFactory.getLogger(JavaScriptDynamicValue.class);
+    private final Logger log;
 
     public JavaScriptDynamicValue() {
-        ScriptEngineManager factory = new ScriptEngineManager();
-        engine = factory.getEngineByName("js");
+        engine = new ScriptEngineManager().getEngineByName("js");
+        log = LoggerFactory.getLogger(JavaScriptDynamicValue.class);
     }
 
     @Override

@@ -1,12 +1,11 @@
 package com.jupitertools.datasetroll.expect.dtnamic.value;
 
-import javax.script.ScriptException;
-
-import com.antkorwin.commonutils.exceptions.InternalException;
 import com.jupitertools.datasetroll.expect.dynamic.value.JavaScriptDynamicValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import javax.script.ScriptException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

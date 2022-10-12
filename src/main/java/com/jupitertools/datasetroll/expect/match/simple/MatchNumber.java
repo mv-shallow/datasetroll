@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll.expect.match.simple;
 
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupitertools.datasetroll.expect.match.MatchData;

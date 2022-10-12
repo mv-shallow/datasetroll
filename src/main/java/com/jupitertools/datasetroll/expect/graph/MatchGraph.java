@@ -1,11 +1,9 @@
 package com.jupitertools.datasetroll.expect.graph;
 
+import com.jupitertools.datasetroll.expect.match.MatchAny;
 
 import java.util.List;
 import java.util.Map;
-
-import com.jupitertools.datasetroll.expect.match.MatchAny;
-
 
 /**
  * Created on 09.12.2018.
@@ -29,7 +27,8 @@ public class MatchGraph implements Graph {
         this.documentName = documentName;
         this.dataRecords = dataRecords;
         this.patterns = patterns;
-        this.matchAny = new MatchAny();
+
+        matchAny = new MatchAny();
     }
 
     @Override

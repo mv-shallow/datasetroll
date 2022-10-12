@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll;
 
-
 /**
  * Provide a text String.
  *

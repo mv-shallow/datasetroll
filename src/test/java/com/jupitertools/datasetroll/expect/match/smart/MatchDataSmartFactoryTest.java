@@ -1,8 +1,5 @@
 package com.jupitertools.datasetroll.expect.match.smart;
 
-import java.util.stream.Stream;
-
-import com.antkorwin.commonutils.exceptions.InternalException;
 import com.jupitertools.datasetroll.expect.match.smart.date.MatchDate;
 import com.jupitertools.datasetroll.expect.match.smart.groovy.MatchGroovy;
 import com.jupitertools.datasetroll.expect.match.smart.javascript.MatchJavaScript;
@@ -12,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

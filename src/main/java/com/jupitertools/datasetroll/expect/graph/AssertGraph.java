@@ -1,16 +1,16 @@
 package com.jupitertools.datasetroll.expect.graph;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Evaluate the IndexedGraph and
@@ -19,23 +19,30 @@ import org.slf4j.LoggerFactory;
 public class AssertGraph {
 
     private final IndexedGraph indexGraph;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Logger log = LoggerFactory.getLogger(AssertGraph.class);
+    private final ObjectMapper objectMapper;
+    private final Logger log;
 
-    private boolean failed = false;
-    private List<String> errors = new ArrayList<>();
+    private boolean failed;
+    private final List<String> errors;
 
 
     public AssertGraph(Graph graph) {
         this.indexGraph = new IndexedGraph(graph);
+
+        objectMapper = new ObjectMapper();
+        log = LoggerFactory.getLogger(AssertGraph.class);
+
+        failed = false;
+        errors = new ArrayList<>();
     }
 
     public void doAssert() {
         validateDataRecords(indexGraph.evaluateDataIndexes());
         validatePatterns(indexGraph.evaluatePatternIndexes());
         if (failed) {
-            throw new Error("\nExpectedDataSet of " + indexGraph.getDocumentName() + " \n\n" +
-                            errors.stream().collect(Collectors.joining("\n")) + "\n");
+            throw new AssertionError("\nExpectedDataSet of " +
+                                     indexGraph.getDocumentName() + " \n\n" +
+                                     String.join("\n", errors) + "\n");
         }
     }
 

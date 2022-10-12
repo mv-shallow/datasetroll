@@ -1,8 +1,6 @@
 package com.jupitertools.datasetroll.exportdata.scanner;
 
-
 import java.util.HashMap;
-
 
 /**
  * Created on 04.01.2019.
@@ -22,5 +20,10 @@ public class CaseInsensitiveMap extends HashMap<String, Class<?>> {
     @Override
     public Class<?> get(Object key) {
         return super.get(((String) key).toLowerCase());
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return super.containsKey(((String) key).toLowerCase());
     }
 }

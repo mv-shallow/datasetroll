@@ -15,12 +15,14 @@ import com.jupitertools.datasetroll.expect.match.smart.MatchDataSmartFactory;
  */
 public class MatchAny implements MatchData {
 
+    private final ObjectMapper objectMapper;
     private final MatchDataFactory matchDataFactory;
     private final MatchDataSmartFactory matchDataSmartFactory;
 
     public MatchAny() {
-        this.matchDataFactory = new MatchDataFactory();
-        this.matchDataSmartFactory = new MatchDataSmartFactory();
+        objectMapper = new ObjectMapper();
+        matchDataFactory = new MatchDataFactory();
+        matchDataSmartFactory = new MatchDataSmartFactory();
     }
 
     @Override
@@ -35,9 +37,6 @@ public class MatchAny implements MatchData {
     }
 
     private boolean simpleMatch(Object original, Object expected) {
-        JsonNode originalNode = new ObjectMapper().valueToTree(original);
-        JsonNode expectedNode = new ObjectMapper().valueToTree(expected);
-
         if (original == null) {
             return expected == null;
         }
@@ -45,6 +44,10 @@ public class MatchAny implements MatchData {
         if (expected == null) {
             return true;
         }
+
+
+        JsonNode originalNode = objectMapper.valueToTree(original);
+        JsonNode expectedNode = objectMapper.valueToTree(expected);
 
         if (originalNode.getNodeType() != expectedNode.getNodeType()) {
             return false;

@@ -1,6 +1,5 @@
 package com.jupitertools.datasetroll.exportdata;
 
-
 import com.jupitertools.datasetroll.DataSet;
 
 /**

@@ -1,18 +1,15 @@
 package com.jupitertools.datasetroll.expect;
 
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.jupitertools.datasetroll.DataSet;
 import com.jupitertools.datasetroll.expect.graph.AssertGraph;
 import com.jupitertools.datasetroll.expect.graph.IndexedGraph;
 import com.jupitertools.datasetroll.expect.graph.MatchGraph;
 import com.jupitertools.datasetroll.expect.graph.ReachabilityGraph;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created on 09.12.2018.
@@ -26,57 +23,62 @@ import com.jupitertools.datasetroll.expect.graph.ReachabilityGraph;
  */
 public class MatchDataSets {
 
-	private final DataSet matched;
-	private final DataSet pattern;
+    private final DataSet matched;
+    private final DataSet pattern;
 
-	public MatchDataSets(DataSet matched, DataSet pattern) {
-		this.matched = matched;
-		this.pattern = pattern;
-	}
+    public MatchDataSets(DataSet matched, DataSet pattern) {
+        this.matched = matched;
+        this.pattern = pattern;
+    }
 
-	public void check() {
+    public void check() {
 
-		Map<String, List<Map<String, Object>>> patternMap = pattern.read();
-		Map<String, List<Map<String, Object>>> matchedMap = matched.read();
+        Map<String, List<Map<String, Object>>> matchedMap = matched.read();
+        Map<String, List<Map<String, Object>>> patternMap = pattern.read();
 
-		assertSetsOfDocumentsAreIdentical(matchedMap.keySet(),
-		                                  patternMap.keySet());
+        assertSetsOfDocumentsAreIdentical(matchedMap.keySet(), patternMap.keySet());
 
-		patternMap.keySet().forEach(documentName -> {
-			checkOneCollection(documentName, matchedMap.get(documentName), patternMap.get(documentName));
-		});
-	}
+        patternMap.keySet().forEach(documentName -> {
+            checkOneCollection(documentName, matchedMap.get(documentName), patternMap.get(documentName));
+        });
+    }
 
-	private void checkOneCollection(String documentName,
-	                                List<Map<String, Object>> matched,
-	                                List<Map<String, Object>> pattern) {
+    private void checkOneCollection(String documentName,
+                                    List<Map<String, Object>> matched,
+                                    List<Map<String, Object>> pattern) {
 
-		assertDocumentsCountAreEquals(documentName, matched, pattern);
+        assertDocumentsCountAreEquals(documentName, matched, pattern);
 
-		new AssertGraph(
-				new IndexedGraph(
-						new ReachabilityGraph(
-								new MatchGraph(documentName, matched, pattern)
-						)
-				)
-		).doAssert();
-	}
+        new AssertGraph(
+                new IndexedGraph(
+                        new ReachabilityGraph(
+                                new MatchGraph(documentName, matched, pattern)
+                        )
+                )
+        ).doAssert();
+    }
 
-	private void assertDocumentsCountAreEquals(String documentName, List<Map<String, Object>> matched,
-	                                           List<Map<String, Object>> pattern) {
-		if (matched.size() != pattern.size()) {
-			throw new Error(String.format("expected %d but found %d - %s entities",
-			                              pattern.size(), matched.size(), documentName));
-		}
-	}
+    private void assertDocumentsCountAreEquals(String documentName, List<Map<String, Object>> matched,
+                                               List<Map<String, Object>> pattern) {
+        if (matched.size() == pattern.size()) {
+            return;
+        }
 
-	private void assertSetsOfDocumentsAreIdentical(Set<String> actualDocumentNames,
-	                                               Set<String> expectedDocumentNames) {
+        throw new AssertionError(String.format("expected %d but found %d - %s entities",
+                                               pattern.size(), matched.size(), documentName));
+    }
 
-		if (!Objects.equals(actualDocumentNames, expectedDocumentNames)) {
-			throw new Error(String.format("Not equal document collections:\n expected:\n[%s],\n actual: \n[%s]",
-			                              expectedDocumentNames.stream().collect(Collectors.joining(", ")),
-			                              actualDocumentNames.stream().collect(Collectors.joining(", "))));
-		}
-	}
+    private void assertSetsOfDocumentsAreIdentical(Set<String> matched, Set<String> pattern) {
+        Set<String> notFoundCollections = pattern.stream()
+                                                 .filter(collection -> !matched.contains(collection))
+                                                 .collect(Collectors.toSet());
+
+        if (notFoundCollections.isEmpty()) {
+            return;
+        }
+
+        throw new AssertionError(String.format("Not equal document collections:\n expected:\n[%s],\n actual: \n[%s]",
+                                               String.join(", ", pattern),
+                                               String.join(", ", matched)));
+    }
 }

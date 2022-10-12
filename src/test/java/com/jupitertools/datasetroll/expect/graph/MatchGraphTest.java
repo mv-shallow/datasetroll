@@ -1,11 +1,11 @@
 package com.jupitertools.datasetroll.expect.graph;
 
+import com.google.common.collect.ImmutableMap;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import org.junit.jupiter.api.Test;
 
 /**
  * Created on 09.12.2018.

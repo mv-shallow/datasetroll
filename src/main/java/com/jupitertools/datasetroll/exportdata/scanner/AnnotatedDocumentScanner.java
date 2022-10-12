@@ -1,10 +1,9 @@
 package com.jupitertools.datasetroll.exportdata.scanner;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
 import org.reflections.Reflections;
 
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 /**
  * Created on 19/11/2019

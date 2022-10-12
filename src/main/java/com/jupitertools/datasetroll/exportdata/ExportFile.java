@@ -1,11 +1,12 @@
 package com.jupitertools.datasetroll.exportdata;
 
+import com.jupitertools.datasetroll.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import com.jupitertools.datasetroll.Text;
 
 /**
  * Save text in a file.
@@ -15,9 +16,12 @@ import com.jupitertools.datasetroll.Text;
 public class ExportFile {
 
     private final Text text;
+    private final Logger log;
 
     public ExportFile(Text text) {
         this.text = text;
+
+        log = LoggerFactory.getLogger(ExportFile.class);
     }
 
     /**
@@ -34,7 +38,8 @@ public class ExportFile {
             Files.write(path, textData.getBytes());
         } catch (Exception e) {
             // TODO: improve the system of exceptions
-            throw new RuntimeException("Error while save text in the file: " + fileName, e);
+            log.error("Error while saving text to file", e);
+            throw new RuntimeException(e);
         }
     }
 }
