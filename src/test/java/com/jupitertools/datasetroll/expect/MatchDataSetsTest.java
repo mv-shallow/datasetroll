@@ -1,5 +1,6 @@
 package com.jupitertools.datasetroll.expect;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.jupitertools.datasetroll.DataSet;
 import org.junit.jupiter.api.Assertions;
@@ -13,103 +14,129 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MatchDataSetsTest {
 
-	@Test
-	void matchTheSameDataSets() {
+    @Test
+    void matchTheSameDataSets() {
 
-		ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
-		                                                           "fieldB", "BBB");
+        ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
+                                                                   "fieldB", "BBB");
 
-		ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
-		                                                            "fieldB", "BBB");
+        ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
+                                                                    "fieldB", "BBB");
 
-		DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
-		DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
+        DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
+        DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
 
-		new MatchDataSets(actualDataSet, expectedDataSet).check();
-	}
+        new MatchDataSets(actualDataSet, expectedDataSet).check();
+    }
 
-	@Test
-	void matchDifferentDataSets() {
+    @Test
+    void matchDataSetsIgnoreOrder() {
+        ImmutableMap<String, Object> firstObject =
+                ImmutableMap.of("fieldA",
+                                ImmutableList.of(
+                                        "fieldE",
+                                        ImmutableMap.of(
+                                                "fieldB", "BBB",
+                                                "fieldC", ImmutableList.of("A", "B", "C"),
+                                                "fieldD", ImmutableList.of("A", "B", "C"))));
 
-		ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
-		                                                           "fieldB", "BBB");
+        ImmutableMap<String, Object> secondObject =
+                ImmutableMap.of("fieldA->ignoreOrder",
+                                ImmutableList.of(
+                                        ImmutableMap.of(
+                                                "fieldB", "BBB",
+                                                "fieldC->ignoreOrder", ImmutableList.of("C", "A", "B"),
+                                                "fieldD", ImmutableList.of("A", "B", "C")),
+                                        "fieldE"));
 
-		ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
-		                                                            "fieldB", "BBB");
+        DataSet actualDataSet = () -> ImmutableMap.of("document-name", Collections.singletonList(firstObject));
+        DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Collections.singletonList(secondObject));
 
-		ImmutableMap<String, Object> changedSecondObject = ImmutableMap.of("fieldA", "AAA",
-		                                                                   "fieldB", "---");
+        new MatchDataSets(actualDataSet, expectedDataSet).check();
+    }
 
-		DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
-		DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, changedSecondObject));
+    @Test
+    void matchDifferentDataSets() {
 
+        ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
+                                                                   "fieldB", "BBB");
 
-		Error error = Assertions.assertThrows(Error.class, () -> {
-			new MatchDataSets(actualDataSet, expectedDataSet).check();
-		});
+        ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
+                                                                    "fieldB", "BBB");
 
-		assertThat(error.getMessage()).containsSubsequence("Not expected:", "{\"fieldA\":\"AAA\",\"fieldB\":\"BBB\"}",
-		                                                   "Expected but not found:", "{\"fieldA\":\"AAA\",\"fieldB\":\"---\"}");
-	}
+        ImmutableMap<String, Object> changedSecondObject = ImmutableMap.of("fieldA", "AAA",
+                                                                           "fieldB", "---");
 
-	@Test
-	void matchDataSetsWithDifferentRecordCounts() {
-
-		ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
-		                                                           "fieldB", "BBB");
-
-		ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
-		                                                            "fieldB", "BBB");
-
-		DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
-		DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject));
-
-		Error error = Assertions.assertThrows(Error.class, () -> {
-			new MatchDataSets(actualDataSet, expectedDataSet).check();
-		});
-
-		assertThat(error).hasMessageContaining("expected 1 but found 2 - document-name entities");
-	}
-
-	@Test
-	void matchDifferentDocumentName() {
-
-		ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
-		                                                           "fieldB", "BBB");
-
-		ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
-		                                                            "fieldB", "BBB");
-
-		DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
-		DataSet expectedDataSet = () -> ImmutableMap.of("another-name", Arrays.asList(firstObject, secondObject));
+        DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
+        DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, changedSecondObject));
 
 
-		Error error = Assertions.assertThrows(Error.class, () -> {
-			new MatchDataSets(actualDataSet, expectedDataSet).check();
-		});
+        Error error = Assertions.assertThrows(Error.class, () -> {
+            new MatchDataSets(actualDataSet, expectedDataSet).check();
+        });
 
-		assertThat(error).hasMessageContaining("Not equal document collections");
-		assertThat(error.getMessage()).containsSubsequence("expected:", "another-name",
-		                                                   "actual:", "document-name");
-	}
+        assertThat(error.getMessage()).containsSubsequence("Not expected:", "{\"fieldA\":\"AAA\",\"fieldB\":\"BBB\"}",
+                                                           "Expected but not found:", "{\"fieldA\":\"AAA\",\"fieldB\":\"---\"}");
+    }
 
-	@Test
-	void matchDifferentDocumentNameWithMultipleDocTypes() {
+    @Test
+    void matchDataSetsWithDifferentRecordCounts() {
 
-		ImmutableMap<String, Object> record = ImmutableMap.of("fieldA", "AAA",
-		                                                      "fieldB", "BBB");
+        ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
+                                                                   "fieldB", "BBB");
 
-		DataSet actualDataSet = () -> ImmutableMap.of("first-document-name", Collections.singletonList(record),
-		                                              "second-document-name", Collections.singletonList(record));
+        ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
+                                                                    "fieldB", "BBB");
 
-		DataSet expectedDataSet = () -> ImmutableMap.of("first-document-name", Collections.singletonList(record),
-		                                                "second-document-name", Collections.singletonList(record),
-		                                                "SPECIFIC-document-name", Collections.singletonList(record));
+        DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
+        DataSet expectedDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject));
 
-		Error error = Assertions.assertThrows(Error.class, () -> {
-			new MatchDataSets(actualDataSet, expectedDataSet).check();
-		});
+        Error error = Assertions.assertThrows(Error.class, () -> {
+            new MatchDataSets(actualDataSet, expectedDataSet).check();
+        });
 
-		assertThat(error).hasMessageContaining("Not equal document collections");
-	}
+        assertThat(error).hasMessageContaining("expected 1 but found 2 - document-name entities");
+    }
+
+    @Test
+    void matchDifferentDocumentName() {
+
+        ImmutableMap<String, Object> firstObject = ImmutableMap.of("fieldA", "AAA",
+                                                                   "fieldB", "BBB");
+
+        ImmutableMap<String, Object> secondObject = ImmutableMap.of("fieldA", "AAA",
+                                                                    "fieldB", "BBB");
+
+        DataSet actualDataSet = () -> ImmutableMap.of("document-name", Arrays.asList(firstObject, secondObject));
+        DataSet expectedDataSet = () -> ImmutableMap.of("another-name", Arrays.asList(firstObject, secondObject));
+
+
+        Error error = Assertions.assertThrows(Error.class, () -> {
+            new MatchDataSets(actualDataSet, expectedDataSet).check();
+        });
+
+        assertThat(error).hasMessageContaining("Not equal document collections");
+        assertThat(error.getMessage()).containsSubsequence("expected:", "another-name",
+                                                           "actual:", "document-name");
+    }
+
+    @Test
+    void matchDifferentDocumentNameWithMultipleDocTypes() {
+
+        ImmutableMap<String, Object> record = ImmutableMap.of("fieldA", "AAA",
+                                                              "fieldB", "BBB");
+
+        DataSet actualDataSet = () -> ImmutableMap.of("first-document-name", Collections.singletonList(record),
+                                                      "second-document-name", Collections.singletonList(record));
+
+        DataSet expectedDataSet = () -> ImmutableMap.of("first-document-name", Collections.singletonList(record),
+                                                        "second-document-name", Collections.singletonList(record),
+                                                        "SPECIFIC-document-name", Collections.singletonList(record));
+
+        Error error = Assertions.assertThrows(Error.class, () -> {
+            new MatchDataSets(actualDataSet, expectedDataSet).check();
+        });
+
+        assertThat(error).hasMessageContaining("Not equal document collections");
+    }
 }

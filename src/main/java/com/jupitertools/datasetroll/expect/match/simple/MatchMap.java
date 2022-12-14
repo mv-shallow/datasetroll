@@ -3,6 +3,7 @@ package com.jupitertools.datasetroll.expect.match.simple;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupitertools.datasetroll.expect.match.MatchAny;
 import com.jupitertools.datasetroll.expect.match.MatchData;
+import com.jupitertools.datasetroll.expect.match.MatchField;
 
 import java.util.Map;
 
@@ -18,9 +19,10 @@ public class MatchMap implements MatchData {
     private final ObjectMapper objectMapper;
     private final MatchAny matchAny;
 
-    public MatchMap() {
-        objectMapper = new ObjectMapper();
-        matchAny = new MatchAny();
+    public MatchMap(MatchAny matchAny) {
+        this.matchAny = matchAny;
+
+        this.objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -30,11 +32,12 @@ public class MatchMap implements MatchData {
         Map<String, Object> expectedMap = convertToMap(expected);
 
         for (Map.Entry<String, Object> expectedEntry : expectedMap.entrySet()) {
+            MatchField field = MatchField.fromString(expectedEntry.getKey());
 
             Object expectedValue = expectedEntry.getValue();
-            Object originValue = originalMap.get(expectedEntry.getKey());
+            Object originalValue = originalMap.get(field.getName());
 
-            if (!matchAny.match(originValue, expectedValue)) {
+            if (!matchAny.match(originalValue, expectedValue, field.getSettings())) {
                 return false;
             }
         }

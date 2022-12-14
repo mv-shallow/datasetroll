@@ -2,6 +2,8 @@ package com.jupitertools.datasetroll.expect.graph;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jupitertools.datasetroll.tools.DataSetFormatter;
+import com.jupitertools.datasetroll.tools.MatchSettingsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +26,7 @@ public class AssertGraph {
 
     private boolean failed;
     private final List<String> errors;
-
+    private final List<String> settings;
 
     public AssertGraph(Graph graph) {
         this.indexGraph = new IndexedGraph(graph);
@@ -34,15 +36,20 @@ public class AssertGraph {
 
         failed = false;
         errors = new ArrayList<>();
+        settings = new ArrayList<>();
     }
 
     public void doAssert() {
         validateDataRecords(indexGraph.evaluateDataIndexes());
         validatePatterns(indexGraph.evaluatePatternIndexes());
         if (failed) {
+            String settingsMessage = settings.isEmpty() ? "" :
+                                     "\nComparison was performed with following settings:\n" +
+                                     String.join("\n", settings) + "\n";
+
             throw new AssertionError("\nExpectedDataSet of " +
                                      indexGraph.getDocumentName() + " \n\n" +
-                                     String.join("\n", errors) + "\n");
+                                     String.join("\n", errors) + "\n" + settingsMessage);
         }
     }
 
@@ -53,6 +60,7 @@ public class AssertGraph {
                                                   .boxed()
                                                   .filter(i -> !indexes.contains(i))
                                                   .map(indexGraph::getDataRecord)
+                                                  .peek(pattern -> settings.addAll(MatchSettingsUtils.getSettings(pattern)))
                                                   .map(this::mapToString)
                                                   .collect(Collectors.joining("\n"));
 
@@ -68,6 +76,7 @@ public class AssertGraph {
                                                .boxed()
                                                .filter(i -> !indexes.contains(i))
                                                .map(indexGraph::getPattern)
+                                               .peek(pattern -> settings.addAll(MatchSettingsUtils.getSettings(pattern)))
                                                .map(this::mapToString)
                                                .collect(Collectors.joining("\n"));
 
@@ -77,7 +86,7 @@ public class AssertGraph {
 
     private String mapToString(Map<String, Object> stringObjectMap) {
         try {
-            return objectMapper.writeValueAsString(stringObjectMap);
+            return objectMapper.writeValueAsString(DataSetFormatter.removeMatchSettingsFromMap(stringObjectMap));
         } catch (JsonProcessingException e) {
             log.error("Error while convert object to string: {}", stringObjectMap, e);
             // TODO: improve the system of exceptions

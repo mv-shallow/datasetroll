@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jupitertools.datasetroll.expect.match.simple.MatchDataFactory;
 import com.jupitertools.datasetroll.expect.match.smart.MatchDataSmartFactory;
 
+import java.util.HashSet;
+import java.util.Set;
 /**
  * Created on 18.12.2018.
  * <p>
@@ -26,17 +28,21 @@ public class MatchAny implements MatchData {
     }
 
     @Override
-    public boolean match(Object original, Object expected) {
-
+    public boolean match(Object original, Object expected, Set<String> settings) {
         if (matchDataSmartFactory.isNecessary(expected)) {
             return matchDataSmartFactory.get(expected)
-                                        .match(original, expected);
+                                        .match(original, expected, settings);
         }
 
-        return simpleMatch(original, expected);
+        return simpleMatch(original, expected, settings);
     }
 
-    private boolean simpleMatch(Object original, Object expected) {
+    @Override
+    public boolean match(Object original, Object expected) {
+        return match(original, expected, new HashSet<>());
+    }
+
+    private boolean simpleMatch(Object original, Object expected, Set<String> settings) {
         if (original == null) {
             return expected == null;
         }
@@ -44,7 +50,6 @@ public class MatchAny implements MatchData {
         if (expected == null) {
             return true;
         }
-
 
         JsonNode originalNode = objectMapper.valueToTree(original);
         JsonNode expectedNode = objectMapper.valueToTree(expected);
@@ -54,6 +59,6 @@ public class MatchAny implements MatchData {
         }
 
         return matchDataFactory.get(originalNode.getNodeType())
-                               .match(original, expected);
+                               .match(original, expected, settings);
     }
 }
