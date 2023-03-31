@@ -2,7 +2,7 @@ package com.jupitertools.datasetroll.expect.graph;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jupitertools.datasetroll.tools.DataSetFormatter;
+import com.jupitertools.datasetroll.MatchingUtils;
 import com.jupitertools.datasetroll.tools.MatchSettingsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +53,7 @@ public class AssertGraph {
         }
     }
 
+    //TODO лаконичные ошибки без лишней информации
     private void validateDataRecords(Set<Integer> indexes) {
         if (indexes.size() != indexGraph.dataCount()) {
 
@@ -60,7 +61,11 @@ public class AssertGraph {
                                                   .boxed()
                                                   .filter(i -> !indexes.contains(i))
                                                   .map(indexGraph::getDataRecord)
-                                                  .peek(pattern -> settings.addAll(MatchSettingsUtils.getSettings(pattern)))
+                                                  .map(element -> {
+                                                      settings.addAll(MatchSettingsUtils.getSettings(element));
+
+                                                      return MatchingUtils.extractData(element.getFieldValueMap());
+                                                  })
                                                   .map(this::mapToString)
                                                   .collect(Collectors.joining("\n"));
 
@@ -71,22 +76,27 @@ public class AssertGraph {
 
     private void validatePatterns(Set<Integer> indexes) {
         if (indexes.size() != indexGraph.patternCount()) {
+            String notFoundPattern = IntStream.range(0, indexGraph.patternCount())
+                                              .boxed()
+                                              .filter(i -> !indexes.contains(i))
+                                              .map(indexGraph::getPattern)
+                                              .map(element -> {
+                                                  settings.addAll(MatchSettingsUtils.getSettings(element));
 
-            String notFoundPatterns = IntStream.range(0, indexGraph.patternCount())
-                                               .boxed()
-                                               .filter(i -> !indexes.contains(i))
-                                               .map(indexGraph::getPattern)
-                                               .peek(pattern -> settings.addAll(MatchSettingsUtils.getSettings(pattern)))
-                                               .map(this::mapToString)
-                                               .collect(Collectors.joining("\n"));
+                                                  return MatchingUtils.extractData(element.getFieldValueMap());
+                                              })
+                                              .map(this::mapToString)
+                                              .collect(Collectors.joining("\n"));
 
-            error("Expected but not found: \n" + notFoundPatterns + "\n");
+            error("Expected but not found: \n" + notFoundPattern + "\n");
         }
     }
 
     private String mapToString(Map<String, Object> stringObjectMap) {
         try {
-            return objectMapper.writeValueAsString(DataSetFormatter.removeMatchSettingsFromMap(stringObjectMap));
+            return objectMapper.writerWithDefaultPrettyPrinter()
+                               .writeValueAsString(stringObjectMap);
+
         } catch (JsonProcessingException e) {
             log.error("Error while convert object to string: {}", stringObjectMap, e);
             // TODO: improve the system of exceptions

@@ -1,8 +1,9 @@
 package com.jupitertools.datasetroll.expect.graph;
 
+import com.jupitertools.datasetroll.MatchElement;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -15,8 +16,8 @@ import java.util.function.Supplier;
 public class TestGraph implements Graph {
 
     private final boolean[][] matrix;
-    private final List<Map<String, Object>> dataRecords;
-    private final List<Map<String, Object>> patterns;
+    private final List<MatchElement> dataRecords;
+    private final List<MatchElement> patterns;
 
     public TestGraph(Supplier<boolean[][]> matrix) {
         this.matrix = matrix.get();
@@ -25,8 +26,8 @@ public class TestGraph implements Graph {
     }
 
     public TestGraph(Supplier<boolean[][]> matrix,
-                     List<Map<String, Object>> dataRecords,
-                     List<Map<String, Object>> patterns) {
+                     List<MatchElement> dataRecords,
+                     List<MatchElement> patterns) {
         this.matrix = matrix.get();
         this.dataRecords = dataRecords;
         this.patterns = patterns;
@@ -48,12 +49,12 @@ public class TestGraph implements Graph {
     }
 
     @Override
-    public Map<String, Object> getDataRecord(int index) {
+    public MatchElement getDataRecord(int index) {
         return dataRecords.get(index);
     }
 
     @Override
-    public Map<String, Object> getPattern(int index) {
+    public MatchElement getPattern(int index) {
         return patterns.get(index);
     }
 

@@ -1,6 +1,8 @@
 package com.jupitertools.datasetroll.expect;
 
 import com.jupitertools.datasetroll.DataSet;
+import com.jupitertools.datasetroll.MatchElement;
+import com.jupitertools.datasetroll.MatchingUtils;
 import com.jupitertools.datasetroll.expect.graph.AssertGraph;
 import com.jupitertools.datasetroll.expect.graph.IndexedGraph;
 import com.jupitertools.datasetroll.expect.graph.MatchGraph;
@@ -46,13 +48,22 @@ public class MatchDataSets {
     private void checkOneCollection(String documentName,
                                     List<Map<String, Object>> matched,
                                     List<Map<String, Object>> pattern) {
-
+        //TODO проверка на отсутствие дубликатов по ключам(без учета настроек)
         assertDocumentsCountAreEquals(documentName, matched, pattern);
+
+
+        List<MatchElement> actual = matched.stream()
+                                           .map(MatchingUtils::toMatchElement)
+                                           .collect(Collectors.toList());
+
+        List<MatchElement> expected = pattern.stream()
+                                             .map(MatchingUtils::toMatchElement)
+                                             .collect(Collectors.toList());
 
         new AssertGraph(
                 new IndexedGraph(
                         new ReachabilityGraph(
-                                new MatchGraph(documentName, matched, pattern)
+                                new MatchGraph(documentName, actual, expected)
                         )
                 )
         ).doAssert();

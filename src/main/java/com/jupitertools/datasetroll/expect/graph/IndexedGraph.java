@@ -1,7 +1,8 @@
 package com.jupitertools.datasetroll.expect.graph;
 
+import com.jupitertools.datasetroll.MatchElement;
+
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,12 +39,12 @@ public class IndexedGraph implements Graph {
     }
 
     @Override
-    public Map<String, Object> getDataRecord(int index) {
+    public MatchElement getDataRecord(int index) {
         return graph.getDataRecord(index);
     }
 
     @Override
-    public Map<String, Object> getPattern(int index) {
+    public MatchElement getPattern(int index) {
         return graph.getPattern(index);
     }
 

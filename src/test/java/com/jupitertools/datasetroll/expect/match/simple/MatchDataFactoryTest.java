@@ -21,7 +21,7 @@ class MatchDataFactoryTest {
 
     private static Stream<Arguments> aliases() {
         return Stream.of(Arguments.of(JsonNodeType.STRING, MatchString.class),
-                         Arguments.of(JsonNodeType.OBJECT, MatchMap.class),
+                         Arguments.of(JsonNodeType.OBJECT, MatchElements.class),
                          Arguments.of(JsonNodeType.ARRAY, MatchList.class),
                          Arguments.of(JsonNodeType.NUMBER, MatchNumber.class),
                          Arguments.of(JsonNodeType.BOOLEAN, MatchObjects.class));

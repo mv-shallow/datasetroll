@@ -1,6 +1,6 @@
 package com.jupitertools.datasetroll.expect.graph;
 
-import java.util.Map;
+import com.jupitertools.datasetroll.MatchElement;
 
 /**
  * Created on 09.12.2018.
@@ -34,17 +34,19 @@ public interface Graph {
      * retrieve a data record by the index in graph
      *
      * @param index position of needed data record
+     *
      * @return data record from mongodb by the index in graph
      */
-    Map<String, Object> getDataRecord(int index);
+    MatchElement getDataRecord(int index);
 
     /**
      * retrieve the pattern from data set file
      *
      * @param index position of this pattern in the graph
+     *
      * @return pattern object from a data set file by the index from the graph
      */
-    Map<String, Object> getPattern(int index);
+    MatchElement getPattern(int index);
 
     /**
      * @return name of the mongodb document associated to this graph

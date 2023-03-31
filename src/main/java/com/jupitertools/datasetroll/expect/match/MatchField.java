@@ -3,6 +3,7 @@ package com.jupitertools.datasetroll.expect.match;
 import com.google.common.collect.ImmutableSet;
 import com.jupitertools.datasetroll.tools.MatchSettingsUtils;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 
@@ -30,12 +31,8 @@ public class MatchField {
         return settings;
     }
 
-    public boolean hasSettings() {
-        return !settings.isEmpty();
-    }
-
-    public static MatchField fromString(String unformattedName) {
-        Matcher matcher = MatchSettingsUtils.matchForNameWithSettings(unformattedName);
+    public static MatchField fromString(String field) {
+        Matcher matcher = MatchSettingsUtils.matcherForNameWithSettings(field);
 
         String fieldName = matcher.group("fieldName");
         String settings = matcher.group("settings");
@@ -45,5 +42,23 @@ public class MatchField {
                                                         : ImmutableSet.of();
 
         return new MatchField(fieldName, settingsSet);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MatchField that = (MatchField) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

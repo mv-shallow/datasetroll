@@ -37,11 +37,12 @@ public class MatchList implements MatchData {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean match(Object original, Object expected, Set<String> settings) {
         boolean ignoreOrder = settings.contains("ignoreOrder");
 
-        List<Object> originalList = convertToList(original);
-        List<Object> expectedList = convertToList(expected);
+        List<Object> originalList = (List<Object>) original;
+        List<Object> expectedList = (List<Object>) expected;
 
         if (originalList.size() != expectedList.size()) {
             log.error("different array sizes: \n  actual: {}\n  expected: {}",
@@ -52,10 +53,6 @@ public class MatchList implements MatchData {
 
         return ignoreOrder ? matchIgnoreOrder(originalList, expectedList)
                            : matchWithOrder(originalList, expectedList);
-    }
-
-    private List<Object> convertToList(Object object) {
-        return objectMapper.convertValue(object, List.class);
     }
 
     private String writeObject(Object object) {
@@ -93,7 +90,7 @@ public class MatchList implements MatchData {
 
             boolean matches = false;
 
-            for (int j = 0; j < expectedList.size(); j++) {
+            for (int j = 0; j < expected.size(); j++) {
                 Object expectedValue = expected.get(j);
 
                 matches = matchAny.match(originalValue, expectedValue);

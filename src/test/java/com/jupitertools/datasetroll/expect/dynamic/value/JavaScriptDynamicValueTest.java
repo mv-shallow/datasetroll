@@ -1,6 +1,5 @@
-package com.jupitertools.datasetroll.expect.dtnamic.value;
+package com.jupitertools.datasetroll.expect.dynamic.value;
 
-import com.jupitertools.datasetroll.expect.dynamic.value.JavaScriptDynamicValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

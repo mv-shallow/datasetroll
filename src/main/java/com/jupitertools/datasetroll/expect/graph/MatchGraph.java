@@ -1,9 +1,9 @@
 package com.jupitertools.datasetroll.expect.graph;
 
+import com.jupitertools.datasetroll.MatchElement;
 import com.jupitertools.datasetroll.expect.match.MatchAny;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created on 09.12.2018.
@@ -16,14 +16,14 @@ import java.util.Map;
  */
 public class MatchGraph implements Graph {
 
-    private final List<Map<String, Object>> dataRecords;
-    private final List<Map<String, Object>> patterns;
+    private final List<MatchElement> dataRecords;
+    private final List<MatchElement> patterns;
     private final String documentName;
     private final MatchAny matchAny;
 
     public MatchGraph(String documentName,
-                      List<Map<String, Object>> dataRecords,
-                      List<Map<String, Object>> patterns) {
+                      List<MatchElement> dataRecords,
+                      List<MatchElement> patterns) {
         this.documentName = documentName;
         this.dataRecords = dataRecords;
         this.patterns = patterns;
@@ -59,12 +59,12 @@ public class MatchGraph implements Graph {
     }
 
     @Override
-    public Map<String, Object> getDataRecord(int index) {
+    public MatchElement getDataRecord(int index) {
         return dataRecords.get(index);
     }
 
     @Override
-    public Map<String, Object> getPattern(int index) {
+    public MatchElement getPattern(int index) {
         return patterns.get(index);
     }
 

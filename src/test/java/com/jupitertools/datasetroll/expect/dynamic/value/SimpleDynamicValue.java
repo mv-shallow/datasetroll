@@ -1,6 +1,4 @@
-package com.jupitertools.datasetroll.expect.dtnamic.value;
-
-import com.jupitertools.datasetroll.expect.dynamic.value.DynamicValue;
+package com.jupitertools.datasetroll.expect.dynamic.value;
 
 /**
  * Created on 16.12.2018.

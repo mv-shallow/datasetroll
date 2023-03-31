@@ -1,14 +1,13 @@
 package com.jupitertools.datasetroll.expect.match;
 
 import com.google.common.collect.ImmutableMap;
-import com.jupitertools.datasetroll.Bar;
-import com.jupitertools.datasetroll.FooBar;
+import com.jupitertools.datasetroll.MatchElement;
+import com.jupitertools.datasetroll.TestDataHelper;
 import com.jupitertools.datasetroll.expect.TestData;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -27,9 +26,9 @@ class MatchAnyTest {
         @Test
         void matchWithTheSame() {
             // Arrange
-            Bar original = new Bar("1", "data-101");
-            Map<String, Object> same = ImmutableMap.of("id", "1",
-                                                       "data", "data-101");
+            MatchElement original = TestDataHelper.toMatchElement("id", "1", "data", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("id", "1", "data", "data-101");
+
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isTrue();
         }
@@ -37,8 +36,8 @@ class MatchAnyTest {
         @Test
         void matchWithThePartialSame() {
             // Arrange
-            Bar original = new Bar("1", "data-101");
-            Map<String, Object> same = ImmutableMap.of("data", "data-101");
+            MatchElement original = TestDataHelper.toMatchElement("id", "1", "data", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("data", "data-101");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isTrue();
         }
@@ -46,8 +45,8 @@ class MatchAnyTest {
         @Test
         void matchWithTheDifferent() {
             // Arrange
-            Bar original = new Bar("1", "data-101");
-            Map<String, Object> same = ImmutableMap.of("data", "not same");
+            MatchElement original = TestDataHelper.toMatchElement("1", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("data", "not same");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isFalse();
         }
@@ -55,9 +54,9 @@ class MatchAnyTest {
         @Test
         void matchWithTheDifferentByOneField() {
             // Arrange
-            Bar original = new Bar("1", "data-101");
-            Map<String, Object> same = ImmutableMap.of("id", "1",
-                                                       "data", "not same");
+            MatchElement original = TestDataHelper.toMatchElement("1", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("id", "1",
+                                                              "data", "not same");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isFalse();
         }
@@ -65,10 +64,10 @@ class MatchAnyTest {
         @Test
         void matchWithAnotherStructuredObject() {
             // Arrange
-            Bar original = new Bar("1", "data-101");
-            Map<String, Object> same = ImmutableMap.of("id", "1",
-                                                       "data", "data-101",
-                                                       "field", "not_exists_in_origin");
+            MatchElement original = TestDataHelper.toMatchElement("1", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("id", "1",
+                                                              "data", "data-101",
+                                                              "field", "not_exists_in_origin");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isFalse();
         }
@@ -76,8 +75,8 @@ class MatchAnyTest {
         @Test
         void matchWithDifferentTypesOfField() {
             // Arrange
-            Bar original = new Bar("1", "1100");
-            Map<String, Object> notSame = ImmutableMap.of("data", 1100);
+            MatchElement original = TestDataHelper.toMatchElement("1", "1100");
+            MatchElement notSame = TestDataHelper.toMatchElement("data", 1100);
             // Act & Asserts
             assertThat(new MatchAny().match(original, notSame)).isFalse();
         }
@@ -88,13 +87,15 @@ class MatchAnyTest {
 
         @Test
         void matchWithNested() {
-            Bar bar = new Bar("1B", "Bar-404");
-            FooBar fooBar = new FooBar("1A", "FooBar", bar);
+            MatchElement fooBar = TestDataHelper.toMatchElement("id", "1A",
+                                                                "data", "FooBar",
+                                                                "bar", TestDataHelper.toMatchElement("id", "1B",
+                                                                                                     "data", "Bar-404"));
 
-            Map<String, Object> same = ImmutableMap.of("id", "1A",
-                                                       "data", "FooBar",
-                                                       "bar", ImmutableMap.of("id", "1B",
-                                                                              "data", "Bar-404"));
+            MatchElement same = TestDataHelper.toMatchElement("id", "1A",
+                                                              "data", "FooBar",
+                                                              "bar", TestDataHelper.toMatchElement("id", "1B",
+                                                                                                   "data", "Bar-404"));
             // Act
             MatchAny matcher = new MatchAny();
             // Asserts
@@ -103,24 +104,28 @@ class MatchAnyTest {
 
         @Test
         void matchWithNestedEntityWithoutOneField() {
-            Bar bar = new Bar("1B", "Bar-404");
-            FooBar fooBar = new FooBar("1A", "FooBar", bar);
+            MatchElement fooBar = TestDataHelper.toMatchElement("id", "1A",
+                                                                "data", "FooBar",
+                                                                "bar", TestDataHelper.toMatchElement("id", "1B",
+                                                                                                     "data", "Bar-404"));
 
-            Map<String, Object> same = ImmutableMap.of("id", "1A",
-                                                       "data", "FooBar",
-                                                       "bar", ImmutableMap.of("data", "Bar-404"));
+            MatchElement same = TestDataHelper.toMatchElement("id", "1A",
+                                                              "data", "FooBar",
+                                                              "bar", TestDataHelper.toMatchElement("data", "Bar-404"));
             // Act & Asserts
             assertThat(new MatchAny().match(fooBar, same)).isTrue();
         }
 
         @Test
         void matchNotEqualsWithNestedEntityWithoutOneField() {
-            Bar bar = new Bar("1B", "Bar-404");
-            FooBar fooBar = new FooBar("1A", "FooBar", bar);
+            MatchElement fooBar = TestDataHelper.toMatchElement("id", "1A",
+                                                                "data", "FooBar",
+                                                                "bar", TestDataHelper.toMatchElement("id", "1B",
+                                                                                                     "data", "Bar-404"));
 
-            Map<String, Object> same = ImmutableMap.of("id", "1A",
-                                                       "data", "FooBar",
-                                                       "bar", ImmutableMap.of("data", "Bar-401"));
+            MatchElement same = TestDataHelper.toMatchElement("id", "1A",
+                                                              "data", "FooBar",
+                                                              "bar", TestDataHelper.toMatchElement("data", "Bar-401"));
             // Act & Asserts
             assertThat(new MatchAny().match(fooBar, same)).isFalse();
         }
@@ -128,20 +133,20 @@ class MatchAnyTest {
         @Test
         void matchEqualsWithDoubleLevelOfNestedEntity() {
 
-            Map<String, Object> secondNested1 = ImmutableMap.of("second", "222",
-                                                                "unexpected", "wow");
-            Map<String, Object> firstNested1 = ImmutableMap.of("first", "111",
-                                                               "secondNested", secondNested1);
-            Map<String, Object> bar1 = ImmutableMap.of("id", "1B",
-                                                       "data", "Bar",
-                                                       "firstNested", firstNested1);
+            MatchElement secondNested1 = TestDataHelper.toMatchElement("second", "222",
+                                                                       "unexpected", "wow");
+            MatchElement firstNested1 = TestDataHelper.toMatchElement("first", "111",
+                                                                      "secondNested", secondNested1);
+            MatchElement bar1 = TestDataHelper.toMatchElement("id", "1B",
+                                                              "data", "Bar",
+                                                              "firstNested", firstNested1);
 
-            Map<String, Object> secondNested2 = ImmutableMap.of("second", "222");
-            Map<String, Object> firstNested2 = ImmutableMap.of("first", "111",
-                                                               "secondNested", secondNested2);
-            Map<String, Object> bar2 = ImmutableMap.of("id", "1B",
-                                                       "data", "Bar",
-                                                       "firstNested", firstNested2);
+            MatchElement secondNested2 = TestDataHelper.toMatchElement("second", "222");
+            MatchElement firstNested2 = TestDataHelper.toMatchElement("first", "111",
+                                                                      "secondNested", secondNested2);
+            MatchElement bar2 = TestDataHelper.toMatchElement("id", "1B",
+                                                              "data", "Bar",
+                                                              "firstNested", firstNested2);
             // Act & Asserts
             assertThat(new MatchAny().match(bar1, bar2)).isTrue();
         }
@@ -149,19 +154,19 @@ class MatchAnyTest {
         @Test
         void matchNotEqualsWithDoubleLevelOfNestedEntity() {
 
-            Map<String, Object> secondNested1 = ImmutableMap.of("second", "222");
-            Map<String, Object> firstNested1 = ImmutableMap.of("first", "111",
-                                                               "secondNested", secondNested1);
-            Map<String, Object> bar1 = ImmutableMap.of("id", "1B",
-                                                       "data", "Bar",
-                                                       "firstNested", firstNested1);
+            MatchElement secondNested1 = TestDataHelper.toMatchElement("second", "222");
+            MatchElement firstNested1 = TestDataHelper.toMatchElement("first", "111",
+                                                                      "secondNested", secondNested1);
+            MatchElement bar1 = TestDataHelper.toMatchElement("id", "1B",
+                                                              "data", "Bar",
+                                                              "firstNested", firstNested1);
 
-            Map<String, Object> secondNested2 = ImmutableMap.of("second", "BBB");
-            Map<String, Object> firstNested2 = ImmutableMap.of("first", "111",
-                                                               "secondNested", secondNested2);
-            Map<String, Object> bar2 = ImmutableMap.of("id", "1B",
-                                                       "data", "Bar",
-                                                       "firstNested", firstNested2);
+            MatchElement secondNested2 = TestDataHelper.toMatchElement("second", "BBB");
+            MatchElement firstNested2 = TestDataHelper.toMatchElement("first", "111",
+                                                                      "secondNested", secondNested2);
+            MatchElement bar2 = TestDataHelper.toMatchElement("id", "1B",
+                                                              "data", "Bar",
+                                                              "firstNested", firstNested2);
             // Act & Asserts
             assertThat(new MatchAny().match(bar1, bar2)).isFalse();
         }
@@ -169,19 +174,19 @@ class MatchAnyTest {
         @Test
         void matchNotEqualsWithDoubleLevelOfNestedEntityAndDifferentType() {
 
-            Map<String, Object> secondNested1 = ImmutableMap.of("second", 222);
-            Map<String, Object> firstNested1 = ImmutableMap.of("first", "111",
-                                                               "secondNested", secondNested1);
-            Map<String, Object> bar1 = ImmutableMap.of("id", "1B",
-                                                       "data", "Bar",
-                                                       "firstNested", firstNested1);
+            MatchElement secondNested1 = TestDataHelper.toMatchElement("second", 222);
+            MatchElement firstNested1 = TestDataHelper.toMatchElement("first", "111",
+                                                                      "secondNested", secondNested1);
+            MatchElement bar1 = TestDataHelper.toMatchElement("id", "1B",
+                                                              "data", "Bar",
+                                                              "firstNested", firstNested1);
 
-            Map<String, Object> secondNested2 = ImmutableMap.of("second", 223);
-            Map<String, Object> firstNested2 = ImmutableMap.of("first", "111",
-                                                               "secondNested", secondNested2);
-            Map<String, Object> bar2 = ImmutableMap.of("id", "1B",
-                                                       "data", "Bar",
-                                                       "firstNested", firstNested2);
+            MatchElement secondNested2 = TestDataHelper.toMatchElement("second", 223);
+            MatchElement firstNested2 = TestDataHelper.toMatchElement("first", "111",
+                                                                      "secondNested", secondNested2);
+            MatchElement bar2 = TestDataHelper.toMatchElement("id", "1B",
+                                                              "data", "Bar",
+                                                              "firstNested", firstNested2);
             // Act & Asserts
             assertThat(new MatchAny().match(bar1, bar2)).isFalse();
         }
@@ -193,9 +198,8 @@ class MatchAnyTest {
         @Test
         void simpleRegularExpression() {
             // Arrange
-            Bar original = new Bar("1", "data-101");
-            Map<String, Object> same = ImmutableMap.of("id", "1",
-                                                       "data", "regex: ^data-...$");
+            MatchElement original = TestDataHelper.toMatchElement("id", "1", "data", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("id", "1", "data", "regex: ^data-...$");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isTrue();
         }
@@ -205,9 +209,9 @@ class MatchAnyTest {
             // Arrange
             String UUID_REGEXP = "regex: [a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}";
 
-            Bar original = new Bar(UUID.randomUUID().toString(), "data-101");
-            Map<String, Object> same = ImmutableMap.of("id", UUID_REGEXP,
-                                                       "data", "regex: ^data-...$");
+            MatchElement original = TestDataHelper.toMatchElement("id", UUID.randomUUID(), "data", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("id", UUID_REGEXP,
+                                                              "data", "regex: ^data-...$");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isTrue();
         }
@@ -217,9 +221,10 @@ class MatchAnyTest {
             // Arrange
             String UUID_REGEXP = "regex: [a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}";
 
-            Bar original = new Bar("123", "data-101");
-            Map<String, Object> same = ImmutableMap.of("id", UUID_REGEXP,
-                                                       "data", "regex: ^data-...$");
+
+            MatchElement original = TestDataHelper.toMatchElement("id", "123", "data", "data-101");
+            MatchElement same = TestDataHelper.toMatchElement("id", UUID_REGEXP,
+                                                              "data", "regex: ^data-...$");
             // Act & Asserts
             assertThat(new MatchAny().match(original, same)).isFalse();
         }
@@ -231,11 +236,11 @@ class MatchAnyTest {
         @Test
         void matchWithNullable() {
 
-            Map<String, Object> first =
-                    new TestData().read("/dataset/internal/expect/match_objects.json").get("test").get(0);
+            MatchElement first =
+                    TestDataHelper.toMatchElement(new TestData().read("/dataset/internal/expect/match_objects.json").get("test").get(0));
 
-            Map<String, Object> second =
-                    new TestData().read("/dataset/internal/expect/match_objects.json").get("test").get(1);
+            MatchElement second =
+                    TestDataHelper.toMatchElement(new TestData().read("/dataset/internal/expect/match_objects.json").get("test").get(1));
 
             assertThat(new MatchAny().match(first, second)).isTrue();
         }
@@ -248,8 +253,8 @@ class MatchAnyTest {
         void matchMap() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/match_objects.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(0);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(1);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(0));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(1));
             // Act & Asserts
             assertThat(new MatchAny().match(first, second)).isTrue();
         }
@@ -262,8 +267,8 @@ class MatchAnyTest {
         void matchNestedArray() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/expect_with_nested_array.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(0);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(1);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(0));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(1));
             // Act
             assertThat(new MatchAny().match(first, second)).isTrue();
         }
@@ -272,8 +277,8 @@ class MatchAnyTest {
         void matchNestedArrayNotEquals() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/expect_with_nested_array.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(0);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(2);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(0));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(2));
             // Act
             assertThat(new MatchAny().match(first, second)).isFalse();
         }
@@ -282,8 +287,8 @@ class MatchAnyTest {
         void matchNestedArrayNotSameLength() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/expect_with_nested_array.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(0);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(3);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(0));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(3));
             // Act
             assertThat(new MatchAny().match(first, second)).isFalse();
         }
@@ -292,8 +297,8 @@ class MatchAnyTest {
         void matchArraysOfFloat() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/expect_with_nested_arrays_of_float.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(0);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(1);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(0));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(1));
             // Act
             assertThat(new MatchAny().match(first, second)).isTrue();
         }
@@ -302,8 +307,8 @@ class MatchAnyTest {
         void matchNotSameArraysOfFloat() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/expect_with_nested_arrays_of_float.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(0);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(2);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(0));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(2));
             // Act
             assertThat(new MatchAny().match(first, second)).isFalse();
         }
@@ -312,8 +317,8 @@ class MatchAnyTest {
         void matchNotSameArraysOfFloatWithSingleValue() {
             // Arrange
             String dataSetFilePath = "/dataset/internal/expect/expect_with_nested_arrays_of_float.json";
-            Map<String, Object> first = new TestData().read(dataSetFilePath).get("test").get(4);
-            Map<String, Object> second = new TestData().read(dataSetFilePath).get("test").get(5);
+            MatchElement first = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(4));
+            MatchElement second = TestDataHelper.toMatchElement(new TestData().read(dataSetFilePath).get("test").get(5));
             // Act
             assertThat(new MatchAny().match(first, second)).isTrue();
         }
@@ -324,8 +329,8 @@ class MatchAnyTest {
 
         @Test
         void intVsLong() {
-            ImmutableMap<String, Integer> intVal = ImmutableMap.of("value", 123);
-            ImmutableMap<String, Long> longVal = ImmutableMap.of("value", 123L);
+            MatchElement intVal = TestDataHelper.toMatchElement("value", 123);
+            MatchElement longVal = TestDataHelper.toMatchElement("value", 123L);
             // Act & Asserts
             assertThat(new MatchAny().match(intVal, longVal)).isTrue();
         }
@@ -337,8 +342,8 @@ class MatchAnyTest {
         @Test
         void now() {
             // Arrange
-            Map<String, Object> actual = ImmutableMap.of("time", new Date());
-            Map<String, Object> expected = ImmutableMap.of("time", "date-match:[NOW]");
+            MatchElement actual = TestDataHelper.toMatchElement("time", new Date());
+            MatchElement expected = TestDataHelper.toMatchElement("time", "date-match:[NOW]");
             // Act & Asserts
             assertThat(new MatchAny().match(actual, expected)).isTrue();
         }
@@ -347,8 +352,8 @@ class MatchAnyTest {
         void plusOneDay() {
             // Arrange
             Date tomorrow = new Date(new Date().getTime() + TimeUnit.DAYS.toMillis(1));
-            Map<String, Object> actual = ImmutableMap.of("time", tomorrow);
-            Map<String, Object> expected = ImmutableMap.of("time", "date-match:[NOW]+1(DAYS)");
+            MatchElement actual = TestDataHelper.toMatchElement("time", tomorrow);
+            MatchElement expected = TestDataHelper.toMatchElement("time", "date-match:[NOW]+1(DAYS)");
             // Act & Asserts
             assertThat(new MatchAny().match(actual, expected)).isTrue();
         }
@@ -357,8 +362,8 @@ class MatchAnyTest {
         void notSame() {
             // Arrange
             Date tomorrow = new Date(new Date().getTime() + TimeUnit.DAYS.toMillis(1));
-            Map<String, Object> actual = ImmutableMap.of("time", tomorrow);
-            Map<String, Object> expected = ImmutableMap.of("time", "date-match:[NOW]");
+            MatchElement actual = TestDataHelper.toMatchElement("time", tomorrow);
+            MatchElement expected = TestDataHelper.toMatchElement("time", "date-match:[NOW]");
             // Act & Asserts
             assertThat(new MatchAny().match(actual, expected)).isFalse();
         }
@@ -367,8 +372,8 @@ class MatchAnyTest {
         void minusOneDay() {
             // Arrange
             Date yesterday = new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(1));
-            Map<String, Object> actual = ImmutableMap.of("time", yesterday);
-            Map<String, Object> expected = ImmutableMap.of("time", "date-match:[NOW]-1(DAYS)");
+            MatchElement actual = TestDataHelper.toMatchElement("time", yesterday);
+            MatchElement expected = TestDataHelper.toMatchElement("time", "date-match:[NOW]-1(DAYS)");
             // Act & Asserts
             assertThat(new MatchAny().match(actual, expected)).isTrue();
         }
@@ -380,8 +385,8 @@ class MatchAnyTest {
         @Test
         void minusOneDay() {
             // Arrange
-            Map<String, Object> actual = ImmutableMap.of("sum", 55);
-            Map<String, Object> expected = ImmutableMap.of("sum", "groovy-match: value == (1..10).sum()");
+            MatchElement actual = TestDataHelper.toMatchElement(ImmutableMap.of("sum", 55));
+            MatchElement expected = TestDataHelper.toMatchElement(ImmutableMap.of("sum", "groovy-match: value == (1..10).sum()"));
             // Act & Asserts
             assertThat(new MatchAny().match(actual, expected)).isTrue();
         }
@@ -393,8 +398,8 @@ class MatchAnyTest {
         @Test
         void evenNumber() {
             // Arrange
-            Map<String, Object> actual = ImmutableMap.of("sum", 32);
-            Map<String, Object> expected = ImmutableMap.of("sum", "js-match: value % 2 == 0");
+            MatchElement actual = TestDataHelper.toMatchElement("sum", 32);
+            MatchElement expected = TestDataHelper.toMatchElement("sum", "js-match: value % 2 == 0");
             // Act & Asserts
             assertThat(new MatchAny().match(actual, expected)).isTrue();
         }

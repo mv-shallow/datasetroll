@@ -46,8 +46,8 @@ class MatchListTest {
         @Test
         void match() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 2, 3));
-            mockObjectMapper(expected, Lists.newArrayList(1, 2, 3));
+            Object original = Lists.newArrayList(1, 2, 3);
+            Object expected = Lists.newArrayList(1, 2, 3);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);
@@ -67,8 +67,8 @@ class MatchListTest {
         @Test
         void matchDifferentSize() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 2, 3, 4));
-            mockObjectMapper(expected, Lists.newArrayList(1, 2, 3));
+            Object original = Lists.newArrayList(1, 2, 3, 4);
+            Object expected = Lists.newArrayList(1, 2, 3);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);
@@ -82,8 +82,8 @@ class MatchListTest {
         @Test
         void matchInvalidOrder() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 3, 2));
-            mockObjectMapper(expected, Lists.newArrayList(1, 2, 3));
+            Object original = Lists.newArrayList(1, 3, 2);
+            Object expected = Lists.newArrayList(1, 2, 3);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);
@@ -107,8 +107,8 @@ class MatchListTest {
         @Test
         void match() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 2, 3));
-            mockObjectMapper(expected, Lists.newArrayList(3, 1, 2));
+            Object original = Lists.newArrayList(1, 2, 3);
+            Object expected = Lists.newArrayList(3, 1, 2);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);
@@ -130,8 +130,8 @@ class MatchListTest {
         @Test
         void matchDifferentSize() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 2, 3, 4));
-            mockObjectMapper(expected, Lists.newArrayList(1, 2, 3));
+            Object original = Lists.newArrayList(1, 2, 3, 4);
+            Object expected = Lists.newArrayList(1, 2, 3);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);
@@ -145,8 +145,8 @@ class MatchListTest {
         @Test
         void matchNotExpectedOriginal() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 4, 3));
-            mockObjectMapper(expected, Lists.newArrayList(3, 1, 2));
+            Object original = Lists.newArrayList(1, 4, 3);
+            Object expected = Lists.newArrayList(3, 1, 2);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);
@@ -167,8 +167,8 @@ class MatchListTest {
         @Test
         void matchNotFoundExpected() {
             //Arrange
-            mockObjectMapper(original, Lists.newArrayList(1, 2, 3));
-            mockObjectMapper(expected, Lists.newArrayList(3, 1, 4));
+            Object original = Lists.newArrayList(1, 2, 3);
+            Object expected = Lists.newArrayList(3, 1, 4);
 
             //Act
             boolean match = matchUnordered.match(original, expected, settings);

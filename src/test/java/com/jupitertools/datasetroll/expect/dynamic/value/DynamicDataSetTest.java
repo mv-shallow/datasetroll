@@ -1,12 +1,9 @@
-package com.jupitertools.datasetroll.expect.dtnamic.value;
+package com.jupitertools.datasetroll.expect.dynamic.value;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.jupitertools.datasetroll.DataSet;
 import com.jupitertools.datasetroll.expect.TestData;
-import com.jupitertools.datasetroll.expect.dynamic.value.DateDynamicValue;
-import com.jupitertools.datasetroll.expect.dynamic.value.DynamicDataSet;
-import com.jupitertools.datasetroll.expect.dynamic.value.GroovyDynamicValue;
 import com.jupitertools.datasetroll.exportdata.JsonExport;
 import org.junit.jupiter.api.Test;
 

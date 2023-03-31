@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class MatchFieldTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"foo", "foo-", "foo->"})
+    @ValueSource(strings = {"foo", "foo{", "foo{}"})
     void createWithoutSettings(String name) {
         //Act
         MatchField field = MatchField.fromString(name);
@@ -33,7 +33,7 @@ class MatchFieldTest {
     @Test
     void createWithSettings() {
         //Act
-        MatchField field = MatchField.fromString("fieldName->someSetting,otherSetting");
+        MatchField field = MatchField.fromString("fieldName{someSetting,otherSetting}");
 
         //Assert
         SoftAssertions.assertSoftly(softly -> {

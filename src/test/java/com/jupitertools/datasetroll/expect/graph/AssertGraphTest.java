@@ -1,14 +1,14 @@
 package com.jupitertools.datasetroll.expect.graph;
 
 import com.google.common.collect.ImmutableMap;
+import com.jupitertools.datasetroll.MatchElement;
+import com.jupitertools.datasetroll.TestDataHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,13 +49,13 @@ class AssertGraphTest {
                 {false, false, true, false, false}
                 // @formatter:on
         };
-        List<Map<String, Object>> data = Arrays.asList(
+        List<MatchElement> data = TestDataHelper.toMatchElements(
                 ImmutableMap.of("id", "1", "value", "BAR-1"),
                 ImmutableMap.of("id", "2", "value", "BAR-2"),
                 ImmutableMap.of("id", "3", "value", "BAR-3"),
                 ImmutableMap.of("id", "4", "value", "BAR-4"),
                 ImmutableMap.of("id", "5", "value", "BAR-5"));
-        List<Map<String, Object>> patterns = Arrays.asList(
+        List<MatchElement> patterns = TestDataHelper.toMatchElements(
                 ImmutableMap.of("value", "BAR-1"),
                 ImmutableMap.of("value", "BAR-2"),
                 ImmutableMap.of("value", "BAR-5"),
@@ -81,13 +81,13 @@ class AssertGraphTest {
                 {false, false, false, false, false}
                 // @formatter:on
         };
-        List<Map<String, Object>> data = Arrays.asList(
+        List<MatchElement> data = TestDataHelper.toMatchElements(
                 ImmutableMap.of("id", "1", "value", "BAR-1"),
                 ImmutableMap.of("id", "2", "value", "BAR-2"),
                 ImmutableMap.of("id", "3", "value", "BAR-3"),
                 ImmutableMap.of("id", "4", "value", "BAR-4"),
                 ImmutableMap.of("id", "5", "value", "BAR-5"));
-        List<Map<String, Object>> patterns = Arrays.asList(
+        List<MatchElement> patterns = TestDataHelper.toMatchElements(
                 ImmutableMap.of("value", "BAR-1"),
                 ImmutableMap.of("value", "BAR-2"),
                 ImmutableMap.of("value", "BAR-???"),
@@ -114,11 +114,11 @@ class AssertGraphTest {
                     {false, false},
                     // @formatter:on
             };
-            List<Map<String, Object>> data = Arrays.asList(
+            List<MatchElement> data = TestDataHelper.toMatchElements(
                     ImmutableMap.of("id", new ObjectWithPrivateFields()),
                     ImmutableMap.of("id", new ObjectWithPrivateFields()));
 
-            List<Map<String, Object>> patterns = Arrays.asList(
+            List<MatchElement> patterns = TestDataHelper.toMatchElements(
                     ImmutableMap.of("value", "BAR-1"),
                     ImmutableMap.of("value", "BAR-2"));
 

@@ -17,7 +17,7 @@ public class MatchDataFactory {
     public MatchData get(JsonNodeType type) {
         switch (type) {
             case OBJECT:
-                return new MatchMap(new MatchAny());
+                return new MatchElements(new MatchAny());
             case ARRAY:
                 return new MatchList(new MatchAny(), new ObjectMapper());
             case NUMBER:
