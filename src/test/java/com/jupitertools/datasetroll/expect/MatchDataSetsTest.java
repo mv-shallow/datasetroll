@@ -41,11 +41,11 @@ class MatchDataSetsTest {
                                                 "fieldD", ImmutableList.of("A", "B", "C"))));
 
         ImmutableMap<String, Object> secondObject =
-                ImmutableMap.of("fieldA->ignoreOrder",
+                ImmutableMap.of("fieldA{ignoreOrder}",
                                 ImmutableList.of(
                                         ImmutableMap.of(
                                                 "fieldB", "BBB",
-                                                "fieldC->ignoreOrder", ImmutableList.of("C", "A", "B"),
+                                                "fieldC{ignoreOrder}", ImmutableList.of("C", "A", "B"),
                                                 "fieldD", ImmutableList.of("A", "B", "C")),
                                         "fieldE"));
 
@@ -75,8 +75,10 @@ class MatchDataSetsTest {
             new MatchDataSets(actualDataSet, expectedDataSet).check();
         });
 
-        assertThat(error.getMessage()).containsSubsequence("Not expected:", "{\"fieldA\":\"AAA\",\"fieldB\":\"BBB\"}",
-                                                           "Expected but not found:", "{\"fieldA\":\"AAA\",\"fieldB\":\"---\"}");
+        assertThat(error.getMessage()).containsSubsequence("Not expected:",
+                                                           "{\r\n  \"fieldA\" : \"AAA\",\r\n  \"fieldB\" : \"BBB\"\r\n}",
+                                                           "Expected but not found:",
+                                                           "{\r\n  \"fieldA\" : \"AAA\",\r\n  \"fieldB\" : \"---\"\r\n}");
     }
 
     @Test
